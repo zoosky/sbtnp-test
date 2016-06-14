@@ -1,0 +1,73 @@
+#!/bin/sh
+#
+# ${{app_name}} <${{app_name}}>
+#
+# chkconfig: 2345 90 50
+# description: ${{descr}}
+#
+### BEGIN INIT INFO
+# Provides: ${{app_name}}
+# Required-Start: $network
+# Required-Stop: $network
+# X-UnitedLinux-Should-Start:
+# Default-Start: 3 5
+# Default-Stop: 0 1 2 6
+# Description: ${{descr}}
+### END INIT INFO
+
+# Source function library.
+. /lib/lsb/init-functions 
+
+# Source from package defined config. Defaults to,
+# bashScriptEnvConfigLocation := Some(defaultLinuxInstallLocation.value + "/" + (name in Linux).value + "/" + (name in Linux).value + ".config")
+[ -e ${{env_config}} ] && . ${{env_config}}
+
+# Source from sysconfig
+# This order means system config appends/overrides package config
+[ -e /etc/sysconfig/${{app_name}} ] && . /etc/sysconfig/${{app_name}}
+
+
+
+case "$1" in
+  start)
+        echo "Starting ${{app_name}}."
+                if [ ! -f /var/lock/subsys/${{app_name}} ]; then
+                        su - ${{daemon_user}} -c "/appl/${{app_name}}/crx-quickstart/bin/start"
+                else
+                        echo "${{app_name}} is already running!"
+                fi
+        touch /var/lock/subsys/${{app_name}}
+        echo
+        ;;
+  stop)
+        echo "Stopping ${{app_name}}."
+        su - ${{daemon_user}} -c "/appl/${{app_name}}/crx-quickstart/bin/stop"
+        rm -f /var/lock/subsys/${{app_name}}
+        echo
+        ;;
+  restart)
+        $0 stop
+        $0 start
+        ;;
+  status)
+        aemstat=`su - ${{daemon_user}} -c "/appl/${{app_name}}/crx-quickstart/bin/status"`
+        case "$?" in
+                        0)
+                        echo "${{app_name}} is running"
+                        ;;
+                        1)
+                        echo "${{app_name}} is dead"
+                        ;;
+                        3)
+                        echo "${{app_name}} is not running"
+                        ;;
+                        4)
+                        echo "There is a unknown problem!"
+                        ;;
+                esac
+                ;;
+  *)
+        echo "Use: ${{app_name}} {start|stop|restart|status}" # removed: cleardispatchercache
+        exit 1
+esac
+exit 0

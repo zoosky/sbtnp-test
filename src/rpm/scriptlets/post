@@ -1,0 +1,27 @@
+#post
+#-------------
+
+# PROFILE
+echo 'export JAVA_HOME=/appl/${{app_name}}/jdk.latest'>> /home/${{daemon_user}}/.profile
+echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /home/${{daemon_user}}/.profile
+
+# JDK
+ln -s /appl/cngjava/oracle/jdk1.8.0_77 /appl/${{app_name}}/jdk.latest
+
+
+chmod +x /etc/init.d/${{app_name}}
+chkconfig ${{app_name}} on
+
+rm -r /appl/${{app_name}}/crx-quickstart/logs
+
+# echo 'Symbolischen Links setzen'
+ln -sf /userlogs/${{app_name}}/ /appl/${{app_name}}/crx-quickstart/logs
+ln -sf /data/${{app_name}}/repository /appl/${{app_name}}/crx-quickstart/repository 
+
+
+chown ${{daemon_user}}.${{daemon_group}} -R /appl/${{app_name}}
+chmod -R 775 /appl/${{app_name}}
+chown ${{daemon_user}}.${{daemon_group}} -R /data/${{app_name}}
+chmod -R 775 /data/${{app_name}}
+
+

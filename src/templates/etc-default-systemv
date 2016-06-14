@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+# #################################
+# ##### ${{app_name}} Default configuration 
+# #################################
+
+# Available replacements 
+# ------------------------------------------------
+# ${{author}}			author
+# ${{descr}}			package description
+# ${{exec}}				startup script name
+# ${{chdir}}			app directory
+# ${{retries}}			retries for startup
+# ${{retryTimeout}}		retry timeout
+# ${{app_name}}			normalized app name
+# ${{daemon_user}}		daemon user
+# -------------------------------------------------
+#
+# ############################
+# # JAVA Configurations      #
+# ############################
+
+JAVA_HOME=/appl/${{app_name}}/jdk.latest
+PATH=$JAVA_HOME/bin:$PATH
+
+# ############################
+# # AEM Start Configurations #
+# ############################
+
+# TCP port used for stop and status scripts
+CQ_PORT=4502
+
+# runmode(s)
+# will not be used if repository is already present. Separate with ',' no spaces
+# valid runmodes are: 'ci,ref,int,abn,prd,author,publish,samplecontent,nosamplecontent'. Not all combinations are valid. See docs.adobe.com
+CQ_RUNMODE='author,nosamplecontent'
+
+# default JVM Opts
+# CQ_JVM_OPTS='-server -Xmx1024m -XX:MaxPermSize=256M -Djava.awt.headless=true'
+# BIT PRD Settings
+CQ_JVM_OPTS='-server -Xmx12Gm -Xms10Gm -XX:+PrintGCDetails -Xloggc:crx-quickstart/logs/gc_since_${timestamp}.log -Djava.awt.headless=true -Dhttp.proxyHost=proxy.proxy.com -Dhttp.proxyPort=8080 -Dhttps.
+"local.example.com" -Djava.io.tmpdir=/usertmp/aem-work -Dtwitter4j.debug=false' 

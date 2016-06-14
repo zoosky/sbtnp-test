@@ -1,0 +1,11 @@
+# preun
+#-------------
+
+# Halting ${{app_name}}
+
+echo "Shutdown ${{app_name}}"
+%stop_on_removal ${{app_name}}
+/etc/init.d/${{app_name}} stop
+
+(cd /appl && tar cf - ${{app_name}}) > /data/backup-appl-${{app_name}}.tar
+(cd /data && tar cf - ${{app_name}}) > /data/backup-data-${{app_name}}.tar
