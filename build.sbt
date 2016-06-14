@@ -59,7 +59,7 @@ linuxPackageSymlinks <<= (linuxPackageSymlinks) map (_ => Seq.empty[LinuxSymlink
 
 // Add an empty folder to mappings
 linuxPackageMappings += packageTemplateMapping(s"/data/${name.value}/repository")()withUser((daemonUser in Linux).value) withGroup((daemonGroup in Linux).value)
-linuxPackageMappings += packageTemplateMapping(s"/usertmp/aem-work")()withUser((daemonUser in Linux).value) withGroup((daemonGroup in Linux).value)
+linuxPackageMappings += packageTemplateMapping(s"/usertmp/${name.value}")()withUser((daemonUser in Linux).value) withGroup((daemonGroup in Linux).value)
 
 mappings in Universal ++= contentOf("src/resources")
 
