@@ -1,7 +1,7 @@
 sbtnp-test
 ==========
 
-A project for demonstrating dupplicate files in UniversalMappings
+A project for demonstrating RPM package relocation and replacing maintainer scripts in systemv
 
 ## Tool Installation
 
