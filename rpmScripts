@@ -1,0 +1,154 @@
+> show rpmScripts
+[info] RpmScripts(Some(# pretrans
+[info] #-------------
+[info] %define _\_os\_install_post %{nil}
+[info] ),Some(# pre
+[info] #-------------
+[info] 
+[info] # Adding system user/group : sbtnp and sbtnp
+[info] if ! getent group | grep -q "^sbtnp:" ;
+[info] then
+[info]     echo "Creating system group: sbtnp"
+[info]     groupadd -g 1267 sbtnp
+[info] fi
+[info] if ! getent passwd | grep -q "^sbtnp:"; 
+[info] then
+[info]     echo "Creating system user: sbtnp"
+[info]     #useradd -u 6826 sbtnp --system -c 'sbtnp-test summary' sbtnp
+[info]     useradd -u 6826 -c 'sbtnp-test summary' -d /home/sbtnp -m -g sbtnp -G sbtnp,users sbtnp
+[info] 
+[info] fi
+[info] 
+[info] # pre
+[info] #-------------
+[info] 
+[info] # Adding system user/group : sbtnp and sbtnp
+[info] if ! getent group | grep -q "^sbtnp:" ;
+[info] then
+[info]     echo "Creating system group: sbtnp"
+[info]     groupadd -g 1267 sbtnp
+[info] fi
+[info] if ! getent passwd | grep -q "^sbtnp:"; 
+[info] then
+[info]     echo "Creating system user: sbtnp"
+[info]     #useradd -u 6826 sbtnp --system -c 'sbtnp-test summary' sbtnp
+[info]     useradd -u 6826 -c 'sbtnp-test summary' -d /home/sbtnp -m -g sbtnp -G sbtnp,users sbtnp
+[info] 
+[info] fi
+[info] ),Some(#post
+[info] #-------------
+[info] 
+[info] # PROFILE
+[info] echo 'export JAVA_HOME=/appl/sbtnp-test/jdk.latest'>> /home/sbtnp/.profile
+[info] echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /home/sbtnp/.profile
+[info] 
+[info] # JDK
+[info] ln -s /appl/cngjava/oracle/jdk1.8.0_77 /appl/sbtnp-test/jdk.latest
+[info] 
+[info] 
+[info] chmod +x /etc/init.d/sbtnp-test
+[info] chkconfig sbtnp-test on
+[info] 
+[info] rm -r /appl/sbtnp-test/crx-quickstart/logs
+[info] 
+[info] # echo 'Symbolischen Links setzen'
+[info] ln -sf /userlogs/sbtnp-test/ /appl/sbtnp-test/crx-quickstart/logs
+[info] ln -sf /data/sbtnp-test/repository /appl/sbtnp-test/crx-quickstart/repository 
+[info] 
+[info] 
+[info] chown sbtnp.sbtnp -R /appl/sbtnp-test
+[info] chmod -R 775 /appl/sbtnp-test
+[info] chown sbtnp.sbtnp -R /data/sbtnp-test
+[info] chmod -R 775 /data/sbtnp-test
+[info] 
+[info] #post
+[info] #-------------
+[info] 
+[info] # PROFILE
+[info] echo 'export JAVA_HOME=/appl/sbtnp-test/jdk.latest'>> /home/sbtnp/.profile
+[info] echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /home/sbtnp/.profile
+[info] 
+[info] # JDK
+[info] ln -s /appl/cngjava/oracle/jdk1.8.0_77 /appl/sbtnp-test/jdk.latest
+[info] 
+[info] 
+[info] chmod +x /etc/init.d/sbtnp-test
+[info] chkconfig sbtnp-test on
+[info] 
+[info] rm -r /appl/sbtnp-test/crx-quickstart/logs
+[info] 
+[info] # echo 'Symbolischen Links setzen'
+[info] ln -sf /userlogs/sbtnp-test/ /appl/sbtnp-test/crx-quickstart/logs
+[info] ln -sf /data/sbtnp-test/repository /appl/sbtnp-test/crx-quickstart/repository 
+[info] 
+[info] 
+[info] chown sbtnp.sbtnp -R /appl/sbtnp-test
+[info] chmod -R 775 /appl/sbtnp-test
+[info] chown sbtnp.sbtnp -R /data/sbtnp-test
+[info] chmod -R 775 /data/sbtnp-test
+[info] ),Some(# verifyscript
+[info] #-------------
+[info] ),Some(# posttrans
+[info] #-------------
+[info] ),Some(# preun
+[info] #-------------
+[info] 
+[info] # Halting sbtnp-test
+[info] 
+[info] echo "Shutdown sbtnp-test"
+[info] %stop_on_removal sbtnp-test
+[info] /etc/init.d/sbtnp-test stop
+[info] 
+[info] (cd /appl && tar cf - sbtnp-test) > /data/backup-appl-sbtnp-test.tar
+[info] (cd /data && tar cf - sbtnp-test) > /data/backup-data-sbtnp-test.tar
+[info] 
+[info] # preun
+[info] #-------------
+[info] 
+[info] # Halting sbtnp-test
+[info] 
+[info] echo "Shutdown sbtnp-test"
+[info] %stop_on_removal sbtnp-test
+[info] /etc/init.d/sbtnp-test stop
+[info] 
+[info] (cd /appl && tar cf - sbtnp-test) > /data/backup-appl-sbtnp-test.tar
+[info] (cd /data && tar cf - sbtnp-test) > /data/backup-data-sbtnp-test.tar
+[info] ),Some(#postun
+[info] #-------------
+[info] 
+[info] rm -r /appl/sbtnp-test
+[info] rm -r /userlogs/sbtnp-test
+[info] 
+[info] # Removing system user/group : sbtnp and sbtnp
+[info] echo "Try deleting system user and group [sbtnp:sbtnp]"
+[info] if getent passwd | grep -q "^sbtnp:"; 
+[info] then
+[info]     echo "Deleting system user: sbtnp"
+[info]     userdel -r sbtnp
+[info] fi
+[info] if getent group | grep -q "^sbtnp:" ;
+[info] then
+[info]     echo "Deleting system group: sbtnp"
+[info]     groupdel sbtnp
+[info] fi
+[info] 
+[info] #postun
+[info] #-------------
+[info] 
+[info] rm -r /appl/sbtnp-test
+[info] rm -r /userlogs/sbtnp-test
+[info] 
+[info] # Removing system user/group : sbtnp and sbtnp
+[info] echo "Try deleting system user and group [sbtnp:sbtnp]"
+[info] if getent passwd | grep -q "^sbtnp:"; 
+[info] then
+[info]     echo "Deleting system user: sbtnp"
+[info]     userdel -r sbtnp
+[info] fi
+[info] if getent group | grep -q "^sbtnp:" ;
+[info] then
+[info]     echo "Deleting system group: sbtnp"
+[info]     groupdel sbtnp
+[info] fi
+[info] ))
+[success]

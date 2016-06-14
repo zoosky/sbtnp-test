@@ -51,8 +51,7 @@ rpmVendor := "sbtnp-test vendor"
 rpmUrl := Some("http://www.example.com/")
 rpmLicense := Some("None")
 
-
-
+rpmBrpJavaRepackJars in Rpm := false
 linuxStartScriptTemplate in Linux := (baseDirectory.value / "src" / "templates" / "rpm" / "start-rpm-template").asURL
 
 linuxPackageSymlinks <<= (linuxPackageSymlinks) map (_ => Seq.empty[LinuxSymlink])

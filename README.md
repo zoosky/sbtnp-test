@@ -35,3 +35,6 @@ Docs: [https://github.com/sbt/sbt-native-packager/](https://github.com/sbt/sbt-n
 
 To debug, in sbt console: `set logLevel := Level.Debug`
 
+ # Questions
+
+ # %define _\_os\_install_post %{nil}
