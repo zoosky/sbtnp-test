@@ -1,4 +1,4 @@
-sbtnp-bug
+sbtnp-test
 ==========
 
 A project for demonstrating dupplicate files in UniversalMappings
