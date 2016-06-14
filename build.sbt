@@ -14,10 +14,9 @@ lazy val root = (project in file(".")).
   )
 
 enablePlugins(JavaServerAppPackaging, RpmPlugin)
-crossPaths := true
+crossPaths := false
 autoScalaLibrary := false
 
-//LinuxPlugin.mapGenericFilesToLinux
 
 name in Linux  := name.value
 version in Linux := version.value
@@ -62,6 +61,7 @@ linuxPackageSymlinks <<= (linuxPackageSymlinks) map (_ => Seq.empty[LinuxSymlink
 linuxPackageMappings += packageTemplateMapping(s"/data/${name.value}/repository")()withUser((daemonUser in Linux).value) withGroup((daemonGroup in Linux).value)
 linuxPackageMappings += packageTemplateMapping(s"/usertmp/aem-work")()withUser((daemonUser in Linux).value) withGroup((daemonGroup in Linux).value)
 
+mappings in Universal ++= contentOf("src/resources")
 
 linuxPackageMappings in Linux := {
     // mappings: Seq[LinuxPackageMapping]
@@ -99,7 +99,8 @@ linuxPackageMappings in Linux := {
 
 TaskKey[Unit]("linuxPkgMapppings") := {
   println("linuxPackageMappings")
-  val mapp = (linuxPackageMappings in Rpm).value
+  //val mapp = (linuxPackageMappings in Linux).value
+  val mapp = linuxPackageMappings.value
     mapp map {  linuxPackage =>
         //println(linuxPackage)
         linuxPackage.mappings map { p => 
