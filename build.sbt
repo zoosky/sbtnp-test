@@ -1,5 +1,5 @@
 import NativePackagerHelper._
-import com.typesafe.sbt.packager.archetypes.ServerLoader
+//import com.typesafe.sbt.packager.archetypes.ServerLoader
 import com.typesafe.sbt.packager.linux.LinuxSymlink
 
 
@@ -13,7 +13,7 @@ lazy val root = (project in file(".")).
     publishArtifact in (ThisBuild) := false
   )
 
-enablePlugins(JavaServerAppPackaging, RpmPlugin)
+enablePlugins(JavaServerAppPackaging, SystemVPlugin, RpmPlugin)
 crossPaths := false
 autoScalaLibrary := false
 
@@ -43,7 +43,7 @@ rpmPrefix := Option(defaultLinuxInstallLocation.value)
 linuxPackageSymlinks := Seq.empty
 
 // RPM
-serverLoading in Rpm := ServerLoader.SystemV
+//serverLoading in Rpm := ServerLoader.SystemV
 name in Rpm := name.value
 packageName in Rpm := "zoosky_" + name.value
 rpmRelease := "2"
